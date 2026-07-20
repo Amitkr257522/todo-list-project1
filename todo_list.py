@@ -1,77 +1,76 @@
-"""
-DecodeLabs - Python Programming Industrial Training Kit
-Project 1: The To-Do List
+# Project 1 - To Do List
+# DecodeLabs internship task
+# basically storing tasks in a list and letting user add/view/remove them
 
-Goal: Build a program where users can add tasks to a list and view them.
-Key Skill: Lists (append & print loops).
-"""
+my_tasks = []  # empty list to start, this is where all tasks will live
 
 
-def display_menu():
-    print("\n===== TO-DO LIST MANAGER =====")
-    print("1. Add a task")
+def show_menu():
+    print("\n1. Add task")
     print("2. View tasks")
-    print("3. Remove a task")
+    print("3. Remove task")
     print("4. Exit")
-    print("===============================")
 
 
-def add_task(my_tasks):
-    task = input("Enter the task you want to add: ").strip()
-    if task:
-        my_tasks.append(task)
-        print(f"✅ Task added: '{task}'")
-    else:
-        print("⚠️  Task cannot be empty. Please try again.")
+def add_task():
+    task = input("What's the task? ")
+    task = task.strip()
 
-
-def view_tasks(my_tasks):
-    print("\n--- YOUR TASKS ---")
-    if not my_tasks:
-        print("No tasks yet. Add one from the menu!")
-    else:
-        # enumerate() gives simultaneous access to index (ID) and value (data)
-        for index, task in enumerate(my_tasks, start=1):
-            print(f"{index}. {task}")
-    print("------------------")
-
-
-def remove_task(my_tasks):
-    view_tasks(my_tasks)
-    if not my_tasks:
+    if task == "":
+        print("can't add empty task")
         return
+
+    my_tasks.append(task)
+    print("added:", task)
+
+
+def view_tasks():
+    print("\nYour tasks:")
+    if len(my_tasks) == 0:
+        print("nothing here yet")
+        return
+
+    # using enumerate so i get both number and the task, saw this online
+    # instead of doing range(len(my_tasks))
+    for i, t in enumerate(my_tasks, 1):
+        print(i, "-", t)
+
+
+def remove_task():
+    view_tasks()
+    if len(my_tasks) == 0:
+        return
+
+    num = input("Enter task number to remove: ")
+
+    # wrapped in try except cause if someone types letters it was crashing before
     try:
-        choice = int(input("Enter the task number to remove: "))
-        if 1 <= choice <= len(my_tasks):
-            removed = my_tasks.pop(choice - 1)
-            print(f"🗑️  Removed: '{removed}'")
-        else:
-            print("⚠️  Invalid task number.")
+        num = int(num)
     except ValueError:
-        print("⚠️  Please enter a valid number.")
+        print("enter a number please")
+        return
+
+    if num < 1 or num > len(my_tasks):
+        print("invalid task number")
+        return
+
+    removed = my_tasks.pop(num - 1)
+    print("removed:", removed)
 
 
-def main():
-    # This is our storage: an empty list that holds multiple tasks
-    # in a single variable — the foundation of every database.
-    my_tasks = []
+# main loop
+while True:
+    show_menu()
+    choice = input("Pick an option: ")
 
-    while True:
-        display_menu()
-        choice = input("Choose an option (1-4): ").strip()
-
-        if choice == "1":
-            add_task(my_tasks)
-        elif choice == "2":
-            view_tasks(my_tasks)
-        elif choice == "3":
-            remove_task(my_tasks)
-        elif choice == "4":
-            print("👋 Goodbye! Keep building.")
-            break
-        else:
-            print("⚠️  Invalid option. Please choose between 1 and 4.")
-
-
-if __name__ == "__main__":
-    main()
+    if choice == "1":
+        add_task()
+    elif choice == "2":
+        view_tasks()
+    elif choice == "3":
+        remove_task()
+    elif choice == "4":
+        print("bye")
+        break
+    else:
+        print("that's not a valid option")
