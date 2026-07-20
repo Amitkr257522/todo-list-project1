@@ -70,7 +70,7 @@ while True:
     elif choice == "3":
         remove_task()
     elif choice == "4":
-        print("bye")
+        print("👋 Goodbye! Keep building.")
         break
     else:
         print("that's not a valid option")
